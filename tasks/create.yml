@@ -8,6 +8,7 @@
     server_type: ccx21
     image: centos-7
     state: present
+    location: "{{ location }}"
     labels:
      a3: "{{ a3servername }}"
   register: a3srv_fact
@@ -30,6 +31,7 @@
     server_type: cx11
     image: centos-7
     state: present
+    location: "{{ location }}"
     labels:
      a3: "a3{{ item }}"
   loop: "{{ hc }}"

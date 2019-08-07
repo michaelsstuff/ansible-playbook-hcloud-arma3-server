@@ -1,0 +1,6 @@
+---
+- import_tasks: create.yml
+  when: not destroy
+
+- import_tasks: destroy.yml
+  when: destroy

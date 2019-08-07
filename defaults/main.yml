@@ -6,3 +6,5 @@ hc:
 - hc2
 - hc3
 reposize: 50
+location: nbg1 # fsn1 || nbg1 || hel1
+destroy: false
