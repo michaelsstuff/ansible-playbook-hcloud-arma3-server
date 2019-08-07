@@ -1,0 +1,8 @@
+---
+hcloud_token: VALUE_SPECIFIED_IN_NO_LOG_PARAMETER
+a3servername: a3srv
+hc:
+- hc1
+- hc2
+- hc3
+reposize: 50

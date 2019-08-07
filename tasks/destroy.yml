@@ -1,0 +1,16 @@
+---
+tasks:
+  - name: Remove a the ArmA 3 Server
+    hcloud_server:
+      api_token: "{{ hcloud_token }}"
+      name: "{{ a3servername }}"
+      server_type: ccx21
+      image: centos-7
+      state: absent
+  - name: remove a the ArmA 3 HC
+    hcloud_server:
+      api_token: "{{ hcloud_token }}"
+      name: "a3{{ item }}"
+      state: absent
+    loop: "{{ hc }}"
+    when: hc is defined

@@ -1,0 +1,11 @@
+galaxy_info:
+  role_name: ansible-role-hcloud-arma3-server
+  author: Michael Schietzsch
+  description: Create Server in Hetzner Cloud for Arma3
+
+  license: GPLv3
+
+  min_ansible_version: 1.8
+
+  galaxy_tags:
+    - arma
