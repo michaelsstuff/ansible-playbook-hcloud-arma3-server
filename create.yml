@@ -5,51 +5,66 @@
   gather_facts: False
   user: root
   vars:
-    hcloud_token: yourtoken
-    a3servername: arma3server
+    hcloud_token: VALUE_SPECIFIED_IN_NO_LOG_PARAMETER
+    a3servername: a3srv
+    reposize: 50
     hc:
       - hc1
       - hc2
+      - hc3
   tasks:
-    - name: Create a the ArmA 3 Server
+
+    - set_fact:
+        ips: []
+
+    - name: Create the ArmA 3 Server
       hcloud_server:
         api_token: "{{ hcloud_token }}"
         name: "{{ a3servername }}"
         server_type: ccx21
         image: centos-7
         state: present
-      register: a3server
+      register: a3srv_fact
 
     - set_fact:
-        a3srvip: "{{ a3server.hcloud_server.ipv4_address }}"
+        ips:
+          - "{{ a3srv_fact.hcloud_server.ipv4_address }}"
 
-    - name: Create the mod volume for a3server
+    - name: Create mod volume for ArmA 3 Server
       hcloud_volume:
         api_token: "{{ hcloud_token }}"
-        name: a3server-volume
-        size: 50
+        name: "{{ a3servername }}-mods"
+        size: "{{ reposize }}"
         server: "{{ a3servername }}"
         automount: no
         format: xfs
         state: present
 
-    - name: Create a the ArmA 3 Server
+    - name: Create ArmA 3 HC
       hcloud_server:
         api_token: "{{ hcloud_token }}"
-        name: "arma3{{ item }}"
+        name: "a3{{ item }}"
         server_type: cx11
         image: centos-7
         state: present
-      register: a3server
       loop: "{{ hc }}"
+      when: hc is defined
+      register: hc_fact
 
-    - name: Create the mod volume for headlessclients
+    - set_fact:
+        ips: "{{ ips|default([]) +
+                 hc_fact.results|
+                 json_query('[*].hcloud_server.ipv4_address')
+                 }}"
+
+    - name: Create the mod volume for HC
       hcloud_volume:
         api_token: "{{ hcloud_token }}"
-        name: "{{ item }}-volume"
-        size: 50
-        server: "arma3{{ item }}"
+        name: "a3{{ item }}-mods"
+        size: "{{ reposize }}"
+        server: "a3{{ item }}"
         automount: no
         format: xfs
         state: present
       loop: "{{ hc }}"
+      when: hc is defined
