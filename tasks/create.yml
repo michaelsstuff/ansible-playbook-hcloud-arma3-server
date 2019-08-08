@@ -1,6 +1,7 @@
 ---
 - set_fact:
     ips: []
+
 - name: Create the ArmA 3 Server
   hcloud_server:
     api_token: "{{ hcloud_token }}"
@@ -10,11 +11,13 @@
     state: present
     location: "{{ location }}"
     labels:
-     a3: "{{ a3servername }}"
+      a3: "{{ a3servername }}"
   register: a3srv_fact
+
 - set_fact:
     ips:
       - "{{ a3srv_fact.hcloud_server.ipv4_address }}"
+
 - name: Create mod volume for ArmA 3 Server
   hcloud_volume:
     api_token: "{{ hcloud_token }}"
@@ -24,6 +27,7 @@
     automount: no
     format: xfs
     state: present
+
 - name: Create ArmA 3 HC
   hcloud_server:
     api_token: "{{ hcloud_token }}"
@@ -33,15 +37,17 @@
     state: present
     location: "{{ location }}"
     labels:
-     a3: "a3{{ item }}"
+      a3: "a3{{ item }}"
   loop: "{{ hc }}"
   when: hc is defined
   register: hc_fact
+
 - set_fact:
     ips: "{{ ips|default([]) +
              hc_fact.results|
              json_query('[*].hcloud_server.ipv4_address')
              }}"
+
 - name: Create the mod volume for HC
   hcloud_volume:
     api_token: "{{ hcloud_token }}"

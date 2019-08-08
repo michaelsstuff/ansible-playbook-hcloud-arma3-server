@@ -28,4 +28,3 @@ script:
   # Basic role syntax check
   - 'yamllint -d "{extends: relaxed, rules: {line-length: {max: 120}}}" .'
   - ansible-playbook tests/test.yml -i tests/inventory --syntax-check
-
