@@ -1,6 +1,7 @@
 ---
 - name: Create ssh_key
   hcloud_ssh_key:
+    api_token: "{{ hcloud_token }}"
     name: a3_ssh_key
     public_key: "{{ public_key }}"
     state: present
