@@ -1,4 +1,10 @@
 ---
+- name: Create ssh_key
+  hcloud_ssh_key:
+    name: a3_ssh_key
+    public_key: "{{ public_key }}"
+    state: present
+
 - name: Create the ArmA 3 Server
   hcloud_server:
     api_token: "{{ hcloud_token }}"
@@ -8,7 +14,7 @@
     state: present
     location: "{{ location }}"
     ssh_keys:
-      - "{{ public_key }}"
+      - a3_ssh_key
     labels:
       a3: "{{ a3servername }}"
   register: a3srv_fact
@@ -32,7 +38,7 @@
     state: present
     location: "{{ location }}"
     ssh_keys:
-      - "{{ public_key }}"
+      - a3_ssh_key
     labels:
       a3: "a3{{ item }}"
   loop: "{{ hc }}"
