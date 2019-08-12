@@ -7,6 +7,8 @@
     image: centos-7
     state: present
     location: "{{ location }}"
+    ssh_keys:
+      - {{ public_key }}
     labels:
       a3: "{{ a3servername }}"
   register: a3srv_fact
@@ -29,6 +31,8 @@
     image: centos-7
     state: present
     location: "{{ location }}"
+    ssh_keys:
+      - {{ public_key }}
     labels:
       a3: "a3{{ item }}"
   loop: "{{ hc }}"
